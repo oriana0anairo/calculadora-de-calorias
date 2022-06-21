@@ -1,0 +1,47 @@
+form {
+    display: flex;
+    flex-direction: column;
+    margin-left: 36%;
+    margin-right: 36%;
+
+    text-align: left;
+}
+
+form input {
+    margin-bottom: 20px;
+
+}
+
+/*Firefox:*/
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+input[type="number"]:hover,
+input[type="number"]:focus {
+    -moz-appearance: number-input;
+}
+
+/*Other*/
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.Boton {
+    background-color: black;
+    color: white;
+    font-size: 20px;
+    border-radius: 7px;
+    border: none;
+    height: 50px;
+
+}
+
+.Boton:hover {
+    background-color: white;
+    color: black;
+    border: black solid 1px;
+    transition-duration: 0.3s;
+}

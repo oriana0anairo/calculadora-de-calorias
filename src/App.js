@@ -3,13 +3,14 @@ import './App.css';
 import Medidas from "./componentes/Medidas";
 import Formulario from "./componentes/Formulario";
 import Resultado from "./componentes/Resultado"
+import { Button, TextField } from '@mui/material';
 
 
 function App() {
   const [medidas, setMedidas] = useState("decimal");
   const [calorias, setCalorias] = useState(0)
   const [indicaciones, setIndicaciones] = useState("")
-  let intervalos = false;
+  let intervalos = true;
 
   const guardarMedidas = (medidas) => setMedidas(medidas);
 
@@ -21,6 +22,7 @@ function App() {
     if (medidas === "imperial") {
       setIndicaciones("Peso entre: 89.28lb - 661.38lb  Altura: 55.11in - 88.58in")
     }
+    setCalorias(0)
   }, [medidas])
 
   const validar = (peso, altura, edad) => {
@@ -40,11 +42,11 @@ function App() {
   const calcularCalorias = (peso, altura, edad) => {
     let factor = 0;
     let kal
-    console.log("Peso: " + peso);
-    console.log("Altura: " + altura);
+    //console.log("Peso: " + peso);
+    //console.log("Altura: " + altura);
     console.log("Edad: " + edad);
 
-    validar(peso, altura, edad)
+    //validar(peso, altura, edad)
     if (intervalos === true) {
 
 
@@ -64,10 +66,10 @@ function App() {
 
       kal = ((10 * peso) + (6.25 * altura) - (10 * edad) + 5) * factor
       setCalorias(kal.toFixed(4))
-      console.log(kal);
-      console.log("Peso: " + peso);
-      console.log("Altura: " + altura);
-      console.log("Edad: " + edad);
+      // console.log(kal);
+      // console.log("Peso: " + peso);
+      // console.log("Altura: " + altura);
+      // console.log("Edad: " + edad);
     } else {
       alert("Valores invalidos");
     }
@@ -91,6 +93,7 @@ function App() {
           Edad: 16 años - 105 años<br />
           {indicaciones}
         </p>
+
       </div>
     </div>
   );

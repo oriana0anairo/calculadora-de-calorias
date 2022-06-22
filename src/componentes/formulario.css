@@ -3,7 +3,7 @@ form {
     flex-direction: column;
     margin-left: 36%;
     margin-right: 36%;
-
+    gap: 10px;
     text-align: left;
 }
 

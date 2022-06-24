@@ -4,79 +4,79 @@ import Medidas from "./componentes/Medidas";
 import Formulario from "./componentes/Formulario";
 import Resultado from "./componentes/Resultado"
 import { Button, TextField } from '@mui/material';
+import claves from "./componentes/claves"
 
 
 function App() {
-  const [medidas, setMedidas] = useState("decimal");
+  const [medidas, setMedidas] = useState(claves.decimal);
   const [calorias, setCalorias] = useState(0)
   const [indicaciones, setIndicaciones] = useState("")
-  let intervalos = true;
 
+  //------------------------------------------------
+  const [data, setData] = useState({})
+
+  //Guarda el tipo de medidas en el useState del padre
   const guardarMedidas = (medidas) => setMedidas(medidas);
 
 
-  useEffect(() => {
-    if (medidas === "decimal") {
-      setIndicaciones("Peso entre: 40.50kg-300kg  Altura:1.40mts - 2.25mts")
+  useEffect(() => {//Mensaje que se muestra en la parte de abajo
+    if (medidas === claves.decimal) {
+      setIndicaciones("Peso entre: 40.50kg-300kg  Altura:140cm - 225cm")
     }
-    if (medidas === "imperial") {
+    if (medidas === claves.imperial) {
       setIndicaciones("Peso entre: 89.28lb - 661.38lb  Altura: 55.11in - 88.58in")
     }
-    setCalorias(0)
   }, [medidas])
 
-  const validar = (peso, altura, edad) => {
 
-    if (medidas === "decimal") {
-      if (peso >= 40.50 && peso <= 300 && altura >= 1.40 && altura <= 2.25 && edad >= 16 && edad <= 105) {
-        intervalos = true;
-      }
-    }
-    if (medidas === "imperial") {
-      if (peso >= 89.2863 && peso <= 661.38 && altura >= 55.118 && altura <= 88.5825 && edad >= 16 && edad <= 105) {
-        intervalos = true;
-      }
-    }
+  //Funcion para hacer la transformacion
+  const convercion = (data, setData) => {
+
+    if (medidas === claves.imperial)
+      setData({ ...data, altura: (data.altura / 2.54).toFixed(2), peso: (data.peso / 0.45359237).toFixed(2) })
+
+    if (medidas === claves.decimal)
+      setData({ ...data, altura: (data.altura * 2.54).toFixed(2), peso: (data.peso * 0.45359237).toFixed(2) })
+
   }
 
+  //calcula las calorias
   const calcularCalorias = (peso, altura, edad) => {
     let factor = 0;
     let kal
-    //console.log("Peso: " + peso);
-    //console.log("Altura: " + altura);
-    console.log("Edad: " + edad);
 
-    //validar(peso, altura, edad)
-    if (intervalos === true) {
+    const alturaMin = medidas === claves.decimal ? 140 : 55.118
+    const alturaMax = medidas === claves.decimal ? 225 : 88.5825
 
+    const pesoMin = medidas === claves.decimal ? 40.50 : 89.2863
+    const pesoMax = medidas === claves.decimal ? 300 : 661.38
 
-      if (medidas === "decimal") {
-
-        let pesoRes = peso * 2.2046
-        peso = pesoRes;
-
-        let alturaRes = (altura * 100) * 0.3937;
-        altura = alturaRes
-
-      }
-      if (peso < 165) { factor = 1.6; }
-      if (peso >= 165 && peso <= 200) { factor = 1.4; }
-      if (peso >= 201 && peso <= 220) { factor = 2.1; }
-      if (peso > 220) { factor = 1 }
-
-      kal = ((10 * peso) + (6.25 * altura) - (10 * edad) + 5) * factor
-      setCalorias(kal.toFixed(4))
-      // console.log(kal);
-      // console.log("Peso: " + peso);
-      // console.log("Altura: " + altura);
-      // console.log("Edad: " + edad);
-    } else {
-      alert("Valores invalidos");
+    if (altura < alturaMin || altura > alturaMax || peso < pesoMin || peso > pesoMax || edad < 16 || edad > 105) {
+      return
     }
+
+    if (medidas === claves.decimal) {//valida si en decimales 
+
+      let pesoRes = peso * 2.20462
+      peso = pesoRes;
+
+      let alturaRes = altura * 0.393701;
+      altura = alturaRes
+
+    }//si esta en decimales se cambia imperial
+
+
+    //__________________FACTOR________________________
+    if (peso < 165) { factor = 1.6; }
+    if (peso >= 165 && peso <= 200) { factor = 1.4; }
+    if (peso >= 201 && peso <= 220) { factor = 2.1; }
+    if (peso > 220) { factor = 1 }
+    //___________________________________________________
+
+    kal = ((10 * peso) + (6.25 * altura) - (10 * edad) + 5) * factor
+    setCalorias(kal.toFixed(1))
+
   }
-
-
-
 
   return (
     <div className="App">
@@ -84,8 +84,15 @@ function App() {
       <div className='cuerpo'>
 
         <h1>Calculadora de calorias</h1>
-        <Medidas guardarMedidas={guardarMedidas} />
-        <Formulario medidas={medidas} calcularCalorias={calcularCalorias} />
+        <Medidas medidas={medidas} guardarMedidas={guardarMedidas} />
+        <Formulario
+          medidas={medidas}
+          calcularCalorias={calcularCalorias}
+          convercion={convercion}
+          data={data}
+          setData={setData}
+
+        />
         <p>Por defecto esta escogida la medida decimal</p>
         <Resultado calorias={calorias} />
 

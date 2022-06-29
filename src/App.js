@@ -14,6 +14,8 @@ function App() {
 
   //------------------------------------------------
   const [data, setData] = useState({})
+  //const [dataImperial, setDataImperial] = useState({})
+  //const [dataDataDecimal, setDataDecimal]
 
   //Guarda el tipo de medidas en el useState del padre
   const guardarMedidas = (medidas) => setMedidas(medidas);
@@ -33,10 +35,10 @@ function App() {
   const convercion = (data, setData) => {
 
     if (medidas === claves.imperial)
-      setData({ ...data, altura: (data.altura / 2.54).toFixed(2), peso: (data.peso / 0.45359237).toFixed(2) })
+      setData({ ...data, altura: data.altura / 2.54, peso: data.peso / 0.45359237 })
 
     if (medidas === claves.decimal)
-      setData({ ...data, altura: (data.altura * 2.54).toFixed(2), peso: (data.peso * 0.45359237).toFixed(2) })
+      setData({ ...data, altura: data.altura * 2.54, peso: data.peso * 0.45359237 })
 
   }
 
@@ -74,7 +76,7 @@ function App() {
     //___________________________________________________
 
     kal = ((10 * peso) + (6.25 * altura) - (10 * edad) + 5) * factor
-    setCalorias(kal.toFixed(1))
+    setCalorias(kal.toFixed(0))
 
   }
 

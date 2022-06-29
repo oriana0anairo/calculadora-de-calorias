@@ -97,6 +97,7 @@ function Formulario(props) {
                     id="outlined-error-helper-text"
                     label="Peso"
                     name="peso"
+                    // inputProps={{ maxLength: 5 }}
                     value={data.peso || ''}
                     onChange={handleChange}
                     error={Boolean(banErrorPeso)}
